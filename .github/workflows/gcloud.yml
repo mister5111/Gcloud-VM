@@ -9,9 +9,9 @@ jobs:
       - name: Git clone
         uses: actions/checkout@v1
 
-      - name: Create ZIP
+      - name: Install gcloud
         run: |
-            sudo apt update && apt upgrade -y
+            sudo apt update &&  sudo apt upgrade -y
             sudo apt install apt-transport-https ca-certificates gnupg curl -y
             sudo curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
             ls -la
