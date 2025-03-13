@@ -9,8 +9,8 @@ on:
           default: "deploy"
           type: choice
           options:
-            - Deploy
-            - Destroy
+            - deploy
+            - destroy
 
 jobs:
   Deploy:
