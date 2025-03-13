@@ -21,4 +21,4 @@ jobs:
         run: |
             gcloud -v
             gcloud projects list
-            gcloud compute instances create kodi-deploy --machine-type=g1-small --tags http-server,https-server --zones=europe-central2-a
+            gcloud compute instances create kodi-deploy --machine-type=g1-small --tags http-server,https-server --zone=europe-central2-a
