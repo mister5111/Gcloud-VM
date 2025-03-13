@@ -2,15 +2,7 @@ name: Deploy
 
 on:
   workflow_dispatch:
-    inputs:
-      action:
-        description: "Выберите действие"
-        required: true
-        default: "deploy"
-        type: choice
-        options:
-          - deploy
-          - destroy
+
 
 jobs:
   Deploy:
