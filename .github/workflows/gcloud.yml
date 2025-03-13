@@ -9,6 +9,11 @@ jobs:
       - name: Git clone
         uses: actions/checkout@v1
       
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
       - name: Set up gcloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
@@ -18,9 +23,7 @@ jobs:
       - name: Test API request
         run: |
           curl -H "Authorization: Bearer $TOKEN" https://www.googleapis.com/auth/cloud-platform
-
-      - name: Install gcloud
+      - name: Install
         run: |
-            sudo apt update &&  sudo apt upgrade -y
             gcloud -v
             gcloud projects list
