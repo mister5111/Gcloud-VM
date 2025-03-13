@@ -18,6 +18,6 @@ jobs:
       - name: Set up gcloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: Install
+      - name: Destroy instances
         run: |
             gcloud compute instances delete kodi-deploy --zone=europe-central2-a --quiet
