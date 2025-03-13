@@ -20,6 +20,4 @@ jobs:
 
       - name: Install
         run: |
-            gcloud -v
-            gcloud projects list
-            gcloud compute instances delete kodi-deploy --quiet
+            gcloud compute instances delete kodi-deploy --zone=europe-central2-a --quiet
