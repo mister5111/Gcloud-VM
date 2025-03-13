@@ -17,13 +17,8 @@ jobs:
       - name: Set up gcloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
-      # - name: Get Access Token
-      #   run: echo "TOKEN=$(gcloud auth print-access-token)" >> $GITHUB_ENV
-
-      # - name: Test API request
-      #   run: |
-      #     curl -H "Authorization: Bearer $TOKEN" https://www.googleapis.com/auth/cloud-platform
       - name: Install
         run: |
             gcloud -v
             gcloud projects list
+            gcloud compute instances create kodi-deploy --machine-type=g1-small --tags http-server,https-server --zones=europe-central2-a
