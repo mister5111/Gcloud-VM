@@ -27,4 +27,7 @@ jobs:
             TEST="Hello World"
             echo $TEST
             echo "DAY_OF_WEEK=$TEST" >> $GITHUB_ENV
-            echo "$DAY_OF_WEEK"
+            
+
+      - name: Print DAY_OF_WEEK
+        run: echo "DAY_OF_WEEK is $DAY_OF_WEEK"
