@@ -47,5 +47,5 @@ jobs:
           -d "{\"value\":\"$NEW_VALUE\"}"
 
       - name: Print repository variable
-        run: echo "MY_VARIABLE is ${{ vars.TEST }}"
+        run: echo "MY_VARIABLE is ${{ vars.IP_INSTANCES }}"
     
