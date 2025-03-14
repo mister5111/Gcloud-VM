@@ -11,13 +11,13 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone
-        uses: actions/checkout@v1
+      # - name: Git clone
+      #   uses: actions/checkout@v1
       
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      # - name: Authenticate with Google Cloud
+      #   uses: google-github-actions/auth@v1
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
       # - name: Set up gcloud SDK
       #   uses: google-github-actions/setup-gcloud@v1
@@ -30,13 +30,15 @@ jobs:
       #       Ip_Kodi_Deploy=$(gcloud compute instances list --filter="name=kodi-deploy" --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
       #       echo $Ip_Kodi_Deploy
       #       echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
-            
+      - name: Set variable
+        run: |
+          echo "IP_instances=192.168.10.1" >> $GITHUB_ENV
 
       - name: Update repository variable
         run: |
           REPO="mister5111/Gcloud-VM"
-          VAR_NAME="TEST"
-          NEW_VALUE="123456"
+          VAR_NAME="IP_INSTANCES"
+          NEW_VALUE="$IP_instances"
 
           curl -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
