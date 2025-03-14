@@ -5,7 +5,7 @@ on: push
 
 
 env:
-  IP_KODI_DEPLOY: ""
+  IP_instances: ""
 
 jobs:
   Deploy:
@@ -29,8 +29,8 @@ jobs:
             gcloud compute instances create kodi-deploy --machine-type=g1-small --tags http-server,https-server --zone=europe-central2-a
             Ip_Kodi_Deploy=$(gcloud compute instances list --filter="name=kodi-deploy" --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
             echo $Ip_Kodi_Deploy
-            echo "IP_KODI_DEPLOY=$Ip_Kodi_Deploy" >> $GITHUB_ENV
+            echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
             
 
       - name: Print IP
-        run: echo "IP is $DIP_KODI_DEPLOY"
+        run: echo "IP is $IP_instances"
