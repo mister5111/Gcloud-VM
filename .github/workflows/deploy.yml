@@ -36,7 +36,7 @@ jobs:
         run: |
           REPO="mister5111/Gcloud-VM"
           VAR_NAME="TEST"
-          NEW_VALUE="123"
+          NEW_VALUE="123456"
 
           curl -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
@@ -45,7 +45,5 @@ jobs:
           -d "{\"value\":\"$NEW_VALUE\"}"
 
       - name: Print repository variable
-        env:
-          MY_VARIABLE: ${{ vars.TEST }}
-        run: echo "MY_VARIABLE is $MY_VARIABLE"
+        run: echo "MY_VARIABLE is ${{ vars.TEST }}"
     
