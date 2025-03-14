@@ -24,5 +24,7 @@ jobs:
 
       - name: Create instances
         run: |
-            IP_Kodi_Deploy=$(test)
-            echo $IP_Kodi_Deploy
+            TEST="Hello World"
+            echo $TEST
+            echo "DAY_OF_WEEK=$TEST" >> $GITHUB_ENV
+            echo "$DAY_OF_WEEK"
