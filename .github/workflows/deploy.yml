@@ -32,8 +32,8 @@ jobs:
       #       echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
             
 
-      # - name: Print IP
-      #   run: echo "IP is $IP_instances"
+      - name: Print IP
+        run: echo "TEST=123" >> $GITHUB_ENV
 
       - name: Print repository variable
         env:
