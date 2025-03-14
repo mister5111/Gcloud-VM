@@ -24,9 +24,5 @@ jobs:
 
       - name: Create instances
         run: |
-            gcloud -v
-            gcloud projects list
             IP_Kodi_Deploy=$(test)
             echo $IP_Kodi_Deploy
-            echo "DAY_OF_WEEK=$($IP_Kodi_Deploy)" >> $GITHUB_ENV
-            echo "$DAY_OF_WEEK"
