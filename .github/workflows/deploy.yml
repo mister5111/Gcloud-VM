@@ -1,7 +1,7 @@
 name: Deploy
 
-on:
-  workflow_dispatch:
+on: push
+  # workflow_dispatch:
 
 
 env:
@@ -27,4 +27,4 @@ jobs:
             TEST="Hello World"
             echo $TEST
             echo "DAY_OF_WEEK=$TEST" >> $GITHUB_ENV
-            echo ${{ env.DAY_OF_WEEK }}
+            echo "$DAY_OF_WEEK"
