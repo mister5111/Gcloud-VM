@@ -27,4 +27,4 @@ jobs:
             TEST="Hello World"
             echo $TEST
             echo "DAY_OF_WEEK=$TEST" >> $GITHUB_ENV
-            echo "$DAY_OF_WEEK"
+            echo ${{ env.DAY_OF_WEEK }}
