@@ -32,8 +32,17 @@ jobs:
       #       echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
             
 
-      - name: Print IP
-        run: echo "TEST=123" >> $GITHUB_ENV
+      - name: Update repository variable
+        run: |
+          REPO="mister5111/Gcloud-VM"
+          VAR_NAME="TEST"
+          NEW_VALUE="123"
+
+          curl -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{ secrets.TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          -d "{\"value\":\"$NEW_VALUE\"}"
 
       - name: Print repository variable
         env:
