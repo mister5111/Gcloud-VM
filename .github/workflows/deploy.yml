@@ -30,9 +30,9 @@ jobs:
             Ip_Kodi_Deploy=$(gcloud compute instances list --filter="name=kodi-deploy" --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
             echo $Ip_Kodi_Deploy
             echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
-      - name: Set variable
-        run: |
-          echo "IP_instances=192.168.10.1" >> $GITHUB_ENV
+      # - name: Set variable
+      #   run: |
+      #     echo "IP_instances=192.168.10.1" >> $GITHUB_ENV
 
       - name: Update repository variable
         run: |
