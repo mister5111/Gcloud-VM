@@ -54,7 +54,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          echo "{ vars.IP_INSTANCES }}"
+          echo "{{ vars.IP_INSTANCES }}"
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@${{ vars.IP_INSTANCES }} <<'ENDSSH'
           ls -la
           pwd
