@@ -35,7 +35,7 @@ jobs:
         run: |
           REPO="mister5111/Gcloud-VM"
           VAR_NAME="IP_INSTANCES"
-          NEW_VALUE="$IP_instances"
+          NEW_VALUE="123
 
           curl PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
@@ -46,17 +46,17 @@ jobs:
       - name: Print repository variable
         run: echo "MY_VARIABLE is ${{ vars.IP_INSTANCES }}"
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
-          chmod 600 ~/.ssh/deploy
+      # - name: Set up SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
+      #     chmod 600 ~/.ssh/deploy
 
-      - name: Deploy to server
-        run: |
-          echo "{{ vars.IP_INSTANCES }}"
-          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@${{ vars.IP_INSTANCES }} <<'ENDSSH'
-          ls -la
-          pwd
-          ENDSSH
+      # - name: Deploy to server
+      #   run: |
+      #     echo "{{ vars.IP_INSTANCES }}"
+      #     ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@${{ vars.IP_INSTANCES }} <<'ENDSSH'
+      #     ls -la
+      #     pwd
+      #     ENDSSH
   
