@@ -55,13 +55,13 @@ jobs:
       - name: Deploy to server
         run: |
           while true; do
-          ping -c 2 $IP_instances > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-              echo "host up"
-              break
-            fi
-            echo "host down"
-            sleep 2
+            ping -c 2 $IP_instances > /dev/null 2>&1
+              if [ $? -eq 0 ]; then
+                echo "host up"
+                break
+              fi
+              echo "host down"
+              sleep 2
           done
 
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
