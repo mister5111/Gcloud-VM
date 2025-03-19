@@ -19,8 +19,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      - name: Set up gcloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      # - name: Set up gcloud SDK
+      #   uses: google-github-actions/setup-gcloud@v1
 
       # - name: Create instances
       #   run: |
@@ -35,7 +35,7 @@ jobs:
         run: |
           REPO="mister5111/Gcloud-VM"
           VAR_NAME="IP_INSTANCES"
-          NEW_VALUE="123
+          NEW_VALUE="123"
 
           curl PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
