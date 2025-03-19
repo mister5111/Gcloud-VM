@@ -35,7 +35,7 @@ jobs:
         run: |
           REPO="mister5111/Gcloud-VM"
           VAR_NAME="IP_INSTANCES"
-          NEW_VALUE="123"
+          NEW_VALUE="123456"
 
           curl -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
