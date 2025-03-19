@@ -44,7 +44,7 @@ jobs:
           -d "{\"value\":\"$NEW_VALUE\"}"
 
       - name: Print repository variable
-        run: echo "MY_VARIABLE is ${{ vars.IP_INSTANCES }}"
+        run: echo "MY_VARIABLE is ${{ env.IP_INSTANCES }}"
 
       # - name: Set up SSH key
       #   run: |
