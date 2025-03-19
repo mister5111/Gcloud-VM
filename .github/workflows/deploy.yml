@@ -5,7 +5,7 @@ on:
 
 
 env:
-  IP_instances: ""
+  IP_instances: "34.116.142.17"
 
 jobs:
   Deploy:
