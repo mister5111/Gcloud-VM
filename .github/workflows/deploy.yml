@@ -37,14 +37,14 @@ jobs:
           VAR_NAME="IP_INSTANCES"
           NEW_VALUE="$IP_instances"
 
-          curl -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
+          curl -s -X PATCH "https://api.github.com/repos/$REPO/actions/variables/$VAR_NAME" \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: token ${{ secrets.TOKEN }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -d "{\"value\":\"$NEW_VALUE\"}"
 
       - name: Print repository variable
-        run: echo "MY_VARIABLE is ${{ vars.IP_INSTANCES }}"
+        run: echo "MY_VARIABLE is ${{ env.IP_INSTANCES }}"
 
       - name: Set up SSH key
         run: |
@@ -54,8 +54,8 @@ jobs:
 
       - name: Deploy to server
         run: |
-          echo ${{ vars.IP_INSTANCES }}
-          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@${{ vars.IP_INSTANCES }} <<'ENDSSH'
+          echo ${{ env.IP_INSTANCES }}
+          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@${{ env.IP_INSTANCES }} <<'ENDSSH'
           ls -la
           pwd
           ENDSSH
