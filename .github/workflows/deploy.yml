@@ -60,8 +60,8 @@ jobs:
           echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
           chmod 600 ~/.ssh/deploy
 
-      - name: Deploy to server
-        run: |
+      - name: Copy project
+        run: | 
           for i in {1..15}; do
             if ping -c 2 $IP_instances > /dev/null 2>&1; then
               echo "Host is up!"
@@ -70,19 +70,16 @@ jobs:
             echo "Host is down, retrying..."
             sleep 2
           done
+          scp -i ~/.ssh/deploy -o 'StrictHostKeyChecking no' hello.tar ${{ secrets.SSH_USER }}@$IP_instances:/home/deploy/
+    
 
-          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
-          sudo -s
-          apt update -y && apt install nginx -y
-          ENDSSH
-
-      - name: Set Config for Nginx
+      - name: Deploy to server
         run: |
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
-          sudo -s
-          
           apt update -y && apt install nginx -y
           rm -r /var/www/html/*
           tar -xvf hello.tar -C /var/www/html/ --overwrite
           systemctl restart nginx
           ENDSSH
+
+
