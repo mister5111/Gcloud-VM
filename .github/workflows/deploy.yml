@@ -83,7 +83,7 @@ jobs:
       #     ENDSSH
 
 
-  Deploy1:
+  Deploy:
     needs: [UpVM]
     runs-on: ubuntu-latest
     steps:
