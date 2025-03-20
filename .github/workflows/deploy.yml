@@ -54,6 +54,25 @@ jobs:
       # - name: Print repository variable
       #   run: echo "MY_VARIABLE is ${{ vars.USER_NAME }}"
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+
+      - name: Wait for SSH to become available
+        run: |
+            for i in {1..20}; do
+              if gcloud compute ssh ${{ secrets.SSH_USER }}@$IP_instances --zone=europe-central2-a --command "echo 'SSH is up'" --quiet; then
+                echo "SSH is up!"
+                exit 0
+              fi
+              echo "SSH is not ready, retrying..."
+              sleep 5
+            done
+            echo "Instance did not become ready in time"
+            exit 1
+        
       - name: Check server
         run: |
           echo "$IP_instances"
@@ -69,11 +88,6 @@ jobs:
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
           ENDSSH
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
-          chmod 600 ~/.ssh/deploy
 
       - name: Copy project
         run: |
