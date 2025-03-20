@@ -10,6 +10,8 @@ env:
 jobs:
   UpVM:
     runs-on: ubuntu-latest
+    outputs:
+      IP_INSTANCES: ${{ steps.get_ip.outputs.IP_INSTANCES }}
     steps:
       # - name: Git clone
       #   uses: actions/checkout@v1
@@ -31,13 +33,14 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Create instances
+        id: get_ip
         run: |
             gcloud -v
             gcloud projects list
             gcloud compute instances create kodi-deploy --machine-type=g1-small --tags http-server,https-server --zone=europe-central2-a
             Ip_Kodi_Deploy=$(gcloud compute instances list --filter="name=kodi-deploy" --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
-            echo $Ip_Kodi_Deploy
             echo "IP_instances=$Ip_Kodi_Deploy" >> $GITHUB_ENV
+            echo "::set-output name=IP_INSTANCES::$Ip_Kodi_Deploy"
 
       - name: Update repository variable
         run: |
@@ -106,22 +109,23 @@ jobs:
 
     - name: Copy project
       run: |
-          echo "$IP_instances"
+          IP_INSTANCES="${{ needs.UpVM.outputs.IP_INSTANCES }}"
+          echo "IP: $IP_INSTANCES"
           ls -la
           for i in {1..20}; do
-            if ping -c 2 $IP_instances > /dev/null 2>&1; then
+            if ping -c 2 $IP_INSTANCES > /dev/null 2>&1; then
               echo "Host is up!"
               exit 0
             fi
             echo "Host is down, retrying..."
             sleep 2
           done
-          scp -i ~/.ssh/deploy -o 'StrictHostKeyChecking no' hello.tar ${{ secrets.SSH_USER }}@$IP_instances:/home/deploy/
+          scp -i ~/.ssh/deploy -o 'StrictHostKeyChecking no' hello.tar ${{ secrets.SSH_USER }}@$$IP_INSTANCES:/home/deploy/
     
 
     - name: Settings server
       run: |
-          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
+          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_INSTANCES <<'ENDSSH'
           apt update -y && apt install nginx -y
           rm -r /var/www/html/*
           tar -xvf hello.tar -C /var/www/html/ --overwrite
