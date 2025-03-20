@@ -51,6 +51,10 @@ jobs:
       #     mkdir -p ~/.ssh
       #     echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
       #     chmod 600 ~/.ssh/deploy
+      - name: Set Config for Nginx
+        run: |
+          ls -la
+
 
       # - name: Deploy to server
       #   run: |
