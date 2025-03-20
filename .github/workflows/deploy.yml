@@ -8,19 +8,19 @@ env:
   IP_instances: ""
 
 jobs:
-  Deploy:
+  UpVM:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone
-        uses: actions/checkout@v1
+      # - name: Git clone
+      #   uses: actions/checkout@v1
 
-      - name: Set Config for Nginx
-        run: |
-            sed -i "s/{{WORD}}/${{ vars.USER_NAME }}/g" index.html
+      # - name: Set Config for Nginx
+      #   run: |
+      #       sed -i "s/{{WORD}}/${{ vars.USER_NAME }}/g" index.html
 
-      - name: Create ZIP
-        run: |
-            tar --exclude='.git' -cvf hello.tar .
+      # - name: Create ZIP
+      #   run: |
+      #       tar --exclude='.git' -cvf hello.tar .
           
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v1
@@ -54,14 +54,58 @@ jobs:
       # - name: Print repository variable
       #   run: echo "MY_VARIABLE is ${{ vars.USER_NAME }}"
 
-      - name: Set up SSH key
-        run: |
+      # - name: Set up SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
+      #     chmod 600 ~/.ssh/deploy
+
+      # - name: Copy project
+      #   run: | 
+      #     for i in {1..20}; do
+      #       if ping -c 2 $IP_instances > /dev/null 2>&1; then
+      #         echo "Host is up!"
+      #         exit 0
+      #       fi
+      #       echo "Host is down, retrying..."
+      #       sleep 2
+      #     done
+      #     scp -i ~/.ssh/deploy -o 'StrictHostKeyChecking no' hello.tar ${{ secrets.SSH_USER }}@$IP_instances:/home/deploy/
+    
+
+      # - name: Settings server
+      #   run: |
+      #     ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
+      #     apt update -y && apt install nginx -y
+      #     rm -r /var/www/html/*
+      #     tar -xvf hello.tar -C /var/www/html/ --overwrite
+      #     systemctl restart nginx
+      #     ENDSSH
+
+
+  Deploy:
+    needs: [UpVM]
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Git clone
+      uses: actions/checkout@v1
+
+    - name: Set Config for Nginx
+      run: |
+          sed -i "s/{{WORD}}/${{ vars.USER_NAME }}/g" index.html
+
+    - name: Create ZIP
+      run: |
+          tar --exclude='.git' -cvf hello.tar .
+    - name: Set up SSH key
+      run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/deploy
           chmod 600 ~/.ssh/deploy
 
-      - name: Copy project
-        run: |
+    - name: Copy project
+      run: |
           ls -la
           for i in {1..20}; do
             if ping -c 2 $IP_instances > /dev/null 2>&1; then
@@ -74,13 +118,11 @@ jobs:
           scp -i ~/.ssh/deploy -o 'StrictHostKeyChecking no' hello.tar ${{ secrets.SSH_USER }}@$IP_instances:/home/deploy/
     
 
-      - name: Settings server
-        run: |
+    - name: Settings server
+      run: |
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy ${{ secrets.SSH_USER }}@$IP_instances <<'ENDSSH'
           apt update -y && apt install nginx -y
           rm -r /var/www/html/*
           tar -xvf hello.tar -C /var/www/html/ --overwrite
           systemctl restart nginx
           ENDSSH
-
-
